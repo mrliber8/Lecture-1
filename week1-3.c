@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "week1-3.h"
+#include <week1-3.h>
 
 int main()
 {
