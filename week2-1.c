@@ -1,12 +1,3 @@
-/*
-Schrijf een functie in C genaamd maxArrays(). 
-Deze functie vergelijkt steeds twee floats van twee arrays op dezelfde index en plaatst de grotere waarde in een derde array. 
-Zie tabel hieronder als voorbeeld. Gebruik hierbij uiteraard pointers, gezien je de arrays mee wilt geven aan de functie. 
-De arrays worden dus in de main functie aangemaakt en niet in de maxArrays() functie.
-Print de waarden van array 1 en array 2 voordat de functie is aangeroepen.
-Print de waarden van array 3 nadat de functie is aangeroepen.
-*/
-
 #include <stdio.h>
 
 int main( void ){
@@ -21,21 +12,37 @@ int main( void ){
     float* array3Ptr = &array3[0];
 
     //Print de waarde van array 1 & 2
-    printf("waarde van array1 = %f \n", *array1Ptr);
-    printf("waarde van array2 = %f \n", *array2Ptr);
+    for (int i = 0; i < 4; i++) {
+        printf("waarde van array1[%d] = %f \n", i, array1[i]);
+    }
+    for (int i = 0; i < 4; i++) {
+        printf("waarde van array2[%d] = %f \n", i, array2[i]);
+    }
 
     //Roep de functie maxArrays aan
-
+    for (int i = 0; i < 4; i++) {
+        maxArrays(array1Ptr, array2Ptr, array3Ptr);
+        array1Ptr +=1;
+        array2Ptr +=1;
+        array3Ptr +=1;
+    }
 
     //Print de waarde van array 3
-    printf("waarde van array3 = %f \n", *array3Ptr);
-
+    for (int i = 0; i < 4; i++) {
+        printf("waarde van array3[%d] = %f \n", i, array3[i]);
+    }
+    
 }
 
 
-void maxArrays(){
-    //Check of array 1 of 2 groter is
-
-    //Zet de grootste waarde in array3
+void maxArrays(float *array1Ptr, float *array2Ptr, float *array3Ptr){
+    //Check of array 1 of 2 groter is en zet de grootste waarde in array3
+    if (*array1Ptr > *array2Ptr)
+    {
+        *array3Ptr = *array1Ptr;
+    }
+    else {
+        *array3Ptr = *array2Ptr;
+    }
 
 }
