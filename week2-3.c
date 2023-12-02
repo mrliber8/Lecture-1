@@ -43,27 +43,40 @@ struct student
 int main(void)
 {
     int count = 0;
+    char keuze;
 
     //Declareer de student structure
-    struct student stu[10];
+    struct student stu[50];
+
+    do
+    {
+        // Vul de structure
+        printf("Wat is de naam?: ");
+        fgets(stu[count].naam, sizeof(stu[count].naam), stdin);
+        //scanf("%s", stu[count].naam);
+        printf("Wat is de leeftijd?: ");
+        scanf("%d", &stu[count].leeftijd);
+        getchar(); // Haalt de newline van scanf weg
+        printf("Wat is de opleidingsnaam?: ");
+        fgets(stu[count].opl.opleidingNaam, sizeof(stu[count].opl.opleidingNaam), stdin);
+        //scanf("%s", stu[count].opl.opleidingNaam);
+        printf("Wat is het instroomjaar?: ");
+        scanf("%d", &stu[count].opl.instroomjaar);
+        getchar(); // Haalt de newline van scanf weg
+
+        count++;
+
+        printf("Wil je nog een student invullen? (y/n): \n");
+        scanf(" %c", &keuze);// Zonder spatie pakt hij de whiteline
+        getchar(); // Haalt de newline van scanf weg
+    } while (keuze == 'y' || keuze == 'Y'); // OR ivm mogelijk gebruik van hoofdletter
     
-    // Als test print de size
-    printf("The size of structure student : %ld\n", sizeof(stu)); 
 
-    // Vul de structure
-    printf("Wat is de naam?: ");
-    scanf("%s", stu[count].naam);
-    printf("Wat is de leeftijd?: ");
-    scanf("%d", &stu[count].leeftijd);
-    printf("Wat is de opleidingsnaam?: ");
-    scanf("%s", stu[count].opl.opleidingNaam);
-    printf("Wat is het instroomjaar?: ");
-    scanf("%d", &stu[count].opl.instroomjaar);
-
-
-    //count++;
-    printf("test");
-    printf("%s %d %s %d\n", stu[count].naam, stu[count].leeftijd, stu[count].opl.opleidingNaam, stu[count].opl.instroomjaar);
+   for (int i = 0; i < count; i++)
+   {
+    printf("De naam is: %s en de leeftijd is %d en de opleiding is %s en het instrromjaar is %d\n", stu[i].naam, stu[i].leeftijd, stu[i].opl.opleidingNaam, stu[i].opl.instroomjaar);
+   }
+   
 
 	return 0;
 }
