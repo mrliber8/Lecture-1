@@ -42,19 +42,28 @@ struct student
 
 int main(void)
 {
+    int count = 0;
+
     //Declareer de student structure
-    struct student stu;
+    struct student stu[10];
+    
     // Als test print de size
     printf("The size of structure student : %ld\n", sizeof(stu)); 
 
     // Vul de structure
-    strcpy(stu.opl.opleidingNaam, "HBO-ICT NSE");
-    stu.opl.instroomjaar = 2023;
-    strcpy(stu.naam, "Patrick ten Brinke");
-    stu.leeftijd = 25;
+    printf("Wat is de naam?: ");
+    scanf("%s", stu[count].naam);
+    printf("Wat is de leeftijd?: ");
+    scanf("%d", &stu[count].leeftijd);
+    printf("Wat is de opleidingsnaam?: ");
+    scanf("%s", stu[count].opl.opleidingNaam);
+    printf("Wat is het instroomjaar?: ");
+    scanf("%d", &stu[count].opl.instroomjaar);
 
-    // Print de structure
-    printf("%s %d %s %d\n", stu.naam, stu.leeftijd, stu.opl.opleidingNaam, stu.opl.instroomjaar);
+
+    //count++;
+    printf("test");
+    printf("%s %d %s %d\n", stu[count].naam, stu[count].leeftijd, stu[count].opl.opleidingNaam, stu[count].opl.instroomjaar);
 
 	return 0;
 }
