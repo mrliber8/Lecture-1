@@ -22,18 +22,43 @@ int main()
 
     FILE *inputFileName, *outputFileName;
 
-
-    printf("Wat is de naam?: ");
-    fgets(buf, 20, stdin);
+    //Vraag om de input file name
+    printf("Wat is de input naam?: ");
+    fgets(buf, 100, stdin);
     sscanf(buf, "%s", filename);
 
     inputFileName = fopen(filename, "r");
 
-// https://www.learnc.net/c-tutorial/c-read-text-file/
+    if (inputFileName == NULL)
+    {
+        printf("Error, controleer of de naam goed is, %s kan niet worden gevonden", filename);
+        fclose(inputFileName);
+        return -1;
+    }
+
+    //Vraag om de output file name
+    printf("Wat is de output naam?: ");
+    fgets(buf, 100, stdin);
+    sscanf(buf, "%s", filename);
+
+    outputFileName = fopen(filename, "r");
+
+    if (outputFileName == NULL)
+    {
+        printf("Error, controleer of de naam goed is, %s kan niet worden gevonden", filename);
+        fclose(outputFileName);
+        return -1;
+    }
+
+    char ch;
+    while ((ch = fgetc(inputFileName)) != EOF)
+        putchar(ch);
+    
+
+    // Sluit de files weer
+    fclose(inputFileName);
+    fclose(outputFileName);
 
 
-
-
-    /* code */
     return 0;
 }
