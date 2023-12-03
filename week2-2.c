@@ -8,33 +8,23 @@ Strings.
 
 #include <stdio.h>
 
+#define MAX_INPUT_LENGTH 100
+
 int main(int argc, char const *argv[])
 {
 
     //Initialiseer een char die de zin kan bevatten.
-    char sentance[100];
+    char sentence[MAX_INPUT_LENGTH];
 
     //Vraag de user om input
-    printf("Enter a sentance, max 100 characters: ");
+    printf("Enter a sentance, max %d characters: ", MAX_INPUT_LENGTH);
 
     //Lees de string in
-    fgets(sentance, sizeof(sentance), stdin); 
-    //scanf("%s",sentance); 
-
-    //print de lengte van de complete zin
-    printf("De lengte van de ingevoerde zin is: %lu karakters.\n", strlen(sentance));
-
-    //Bepaal de lengte zonder spaces en end
-    int sentanceLength = strlen(sentance);
-    for (int i = 0; i < strlen(sentance); i++)
-    {
-        if (sentance[i] == ' ' || sentance[i] == '\0' )
-        {
-            sentanceLength += -1;
-        }
-    }
-
-    printf("De lengte zonder spaces en trailing end is: %lu kartakters.\n", sentanceLength);
+    fgets(sentence, MAX_INPUT_LENGTH, stdin); 
+ 
+    //print de lengte van de complete zin -1 vanwege de newline character
+    printf("De lengte van de ingevoerde zin is: %lu karakters.\n", strlen(sentence) -1);
+    
 
     return 0;
 }
