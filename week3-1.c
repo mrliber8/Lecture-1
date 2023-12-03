@@ -22,6 +22,7 @@ int main()
 
     FILE *inputFileName, *outputFileName;
 
+    
     //Vraag om de input file name
     printf("Wat is de input naam?: ");
     fgets(buf, 100, stdin);
@@ -41,7 +42,7 @@ int main()
     fgets(buf, 100, stdin);
     sscanf(buf, "%s", filename);
 
-    outputFileName = fopen(filename, "r");
+    outputFileName = fopen(filename, "w");
 
     if (outputFileName == NULL)
     {
@@ -49,16 +50,44 @@ int main()
         fclose(outputFileName);
         return -1;
     }
+    
+
+    //Standaard filennames om testen makkelijker te maken
+    //inputFileName = fopen("readTest.txt", "r");
+    //outputFileName = fopen("writeTest.txt", "w");
 
     char ch;
+    int counter = 0;
+
     while ((ch = fgetc(inputFileName)) != EOF)
+    {
+        // Karakters, zoals LF en EOF, die niet zichtbaar zijn voor iemand die het bestand opent in een tekst editor moeten niet worden meegeteld.
+        // Newline is '\n', ' ' en '.' staan erin zodat de opmaak gelijk blijft
+        if (ch != '\n' && ch != ' ' && ch != '.')
+        {
+            ch += 1;
+            counter += 1;
+        } else if (ch == ' ' || ch == '.')
+        {
+            //Niet ascii verhogen vanwege de opmaak, maar counter moet wel worden verhoogd natuurlijk
+            counter += 1;
+        }
+        // Display de char als test in de terminal       
         putchar(ch);
-    
+
+        // Schrijf de char naar de nieuwe txt file
+        fputc(ch, outputFileName);
+    }
 
     // Sluit de files weer
     fclose(inputFileName);
     fclose(outputFileName);
 
 
+    // Het aantal karakters van het gehele bestand wordt geteld en aan het einde uitgeprint.
+    printf("\nAantal characters = %d", counter );
+
     return 0;
 }
+
+
