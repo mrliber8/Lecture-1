@@ -12,8 +12,8 @@ Na elke invoeren van een nieuw element wordt alle informatie van alle aangemaakt
 
 // Code is grotendeels hetzelfde als in week 2 opdr 3
 // Alleen gebruik ik voor de struct nu typedef
-// En gebruik ik nu define ipv de hele tijd los '20' erin zetten
-// TO DO: De realloc logica
+// En gebruik ik nu #define voor de size ipv de hele tijd los '20' erin zetten
+
 
 
 #include <stdio.h>
@@ -30,7 +30,16 @@ typedef struct
 int main()
 {
     int capacity = 1;
+    // Als persoon NULL is dan werkt realloc hetzelfde als malloc
+    // Ik laat malloc er alsnog in staan in omdat dit van de opdracht moet en vanwege de uitleg in de do while loop
     Persoon *persoon = malloc(capacity * sizeof(Persoon));
+
+    if (persoon == NULL)
+    {
+        printf("Initiele geheugen toewijziging is niet gelukt");
+        return -1;
+    }
+    
 
 
     int count = 0;
@@ -40,31 +49,52 @@ int main()
     // Ongeveer dezelfde do while logica als week2-3:
     do
     {
-        // Vul de structure
-        printf("Wat is de naam?: ");
-        fgets(buf, NAAM_CHAR_SIZE, stdin);
-        sscanf(buf, "%s", persoon[count].naam);
+        /*
+         Als we capacity op 0 zetten kunnen we de if eigenlijk weg halen want elke keer
+          als de while loop runt dan moet die geincreased worden, zelf vind ik dit
+          wel nicer met de if erin want als je al zeker weet dat je bijvoorbeeld 5 wilt 
+          invullen dan kun je hem gelijk op 5 zetten en de realloc de eerste paar keer overslaan
+        */
 
-        printf("Wat is de leeftijd?: ");
-        fgets(buf, NAAM_CHAR_SIZE, stdin);
-        sscanf(buf, "%d", &persoon[count].leeftijd);
+        // Als count en capacity gelijk zijn dan is het geheugen vol
+        if (count == capacity) {
+            // Increment zodat er ruimte is voor 1 extra
+            capacity += 1;
+            // Reallocate het geheugen met 1 extra
+            persoon = realloc(persoon, capacity * sizeof(Persoon));
+        }
 
-        count++;
+        if (persoon == NULL)
+        {
+            printf("realloc is niet gelukt");
+            return -1;
+        }
+        else {
+            // Vul de structure
+            printf("Wat is de naam?: ");
+            fgets(buf, NAAM_CHAR_SIZE, stdin);
+            sscanf(buf, "%s", persoon[count].naam);
 
-        printf("Wil je nog een student invullen? (y/n): ");
-        fgets(buf, 5, stdin);
-        sscanf(buf, "%c", &keuze);
+            printf("Wat is de leeftijd?: ");
+            fgets(buf, NAAM_CHAR_SIZE, stdin);
+            sscanf(buf, "%d", &persoon[count].leeftijd);
 
+            count++;
 
-        /* code */
+            printf("Wil je nog een persoon invullen? (y/n): ");
+            fgets(buf, 5, stdin);
+            sscanf(buf, "%c", &keuze);
+        }
+
     } while (keuze == 'y' || keuze == 'Y');
     
+    // Print de inhoud van de structs
     for (int i = 0; i < count; i++)
     {
         printf("De naam is: %s en de leeftijd is %d\n", persoon[i].naam, persoon[i].leeftijd);
     }
 
-    // Free the memory
+    // Bevrijd het geheugen weer.
     free(persoon);
     
     return 0;
