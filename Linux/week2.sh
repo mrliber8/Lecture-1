@@ -38,8 +38,43 @@ fi
 
 
 # Stap 2: Krijg de tijden van de file
-# Stap 3: Check of de folder bestaat, zo niet --> aanmaken
-# Stap 4: Kopieer het bestand
+BASE_DIR="/home/liber8"="/mnt/c/Users/patrick/Downloads/Lecture 1 Demo code(2)/Lecture 1/Linux"
+echo $BASE_DIR
+cd $BASE_DIR
+
+for f in *.png do
+    ## Krijg de jaar tijden van de file
+    year="$(date -d "$(stat -c %y "$f")" +%Y)"
+    ## Krijg de maand tijden van de file
+    month="$(date -d "$(stat -c %y "$f")" +%B)"
+    ## Krijg de week tijden van de file
+    week="$(date -d "$(stat -c %y "$f")" +%U)"
+
+    if [ $2 == "maand" ]; then
+
+        # Stap 3: Check of de folder bestaat, zo niet --> aanmaken
+        if [! -d "$BASE_DIR/$year/$month"]; then
+            mkdir "$BASE_DIR/$year/$month"
+        fi
+
+        # Stap 4: Kopieer het bestand
+        cp "$f" "$BASE_DIR/$year/$month"
+        new_file="$BASE_DIR/$year/$month/$f"
+
+    elif [ $2 == "week" ]; then
+
+        # Stap 3: Check of de folder bestaat, zo niet --> aanmaken
+        if [! -d "$BASE_DIR/$year/$month/$week"]; then
+            mkdir "$BASE_DIR/$year/$month/$week"
+        fi
+
+        # Stap 4: Kopieer het bestand
+        cp "$f" "$BASE_DIR/$year/$month/$week"
+        new_file="$BASE_DIR/$year/$month/$week/$f"
+    fi
+
+
+
 # Stap 5: krijg de hash van beide fotos
 # Stap 6: delete het origineel als de hash overeenkomt
 
