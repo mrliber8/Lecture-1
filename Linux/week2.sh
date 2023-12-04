@@ -38,11 +38,13 @@ fi
 
 
 # Stap 2: Krijg de tijden van de file
-BASE_DIR="/home/liber8"="/mnt/c/Users/patrick/Downloads/Lecture 1 Demo code(2)/Lecture 1/Linux"
+BASE_DIR="c/Users/patrick/Downloads/Lecture 1 Demo code(2)/Lecture 1/Linux/random"
 echo $BASE_DIR
-cd $BASE_DIR
+cd "/mnt/c/Users/patrick/Downloads/Lecture 1 Demo code(2)/Lecture 1/Linux/random"
 
-for f in *.png do
+
+
+for f in *.png; do
     ## Krijg de jaar tijden van de file
     year="$(date -d "$(stat -c %y "$f")" +%Y)"
     ## Krijg de maand tijden van de file
@@ -53,28 +55,39 @@ for f in *.png do
     if [ $2 == "maand" ]; then
 
         # Stap 3: Check of de folder bestaat, zo niet --> aanmaken
-        if [! -d "$BASE_DIR/$year/$month"]; then
-            mkdir "$BASE_DIR/$year/$month"
+        if [ ! -d "$year/$month" ]; then
+            mkdir -p "$year/$month"
         fi
 
         # Stap 4: Kopieer het bestand
-        cp "$f" "$BASE_DIR/$year/$month"
-        new_file="$BASE_DIR/$year/$month/$f"
+        cp "$f" "$year/$month"
+        new_file="$year/$month/$f"
 
     elif [ $2 == "week" ]; then
 
         # Stap 3: Check of de folder bestaat, zo niet --> aanmaken
-        if [! -d "$BASE_DIR/$year/$month/$week"]; then
-            mkdir "$BASE_DIR/$year/$month/$week"
+        if [ ! -d "$year/$month/$week" ]; then
+            mkdir -p "$year/$month/$week"
         fi
 
         # Stap 4: Kopieer het bestand
-        cp "$f" "$BASE_DIR/$year/$month/$week"
-        new_file="$BASE_DIR/$year/$month/$week/$f"
+        cp "$f" "$year/$month/$week"
+        new_file="$year/$month/$week/$f"
     fi
 
 
+    # Stap 5: krijg de hash van beide fotos
+    old_file=$f
+    old_file_md5=($(md5sum "$1/$f"))
+    new_file_md5=($(md5sum "$new_file"))
 
-# Stap 5: krijg de hash van beide fotos
-# Stap 6: delete het origineel als de hash overeenkomt
+    # Stap 6: delete het origineel als de hash overeenkomt
+    if [ "$old_file_md5" = "$new_file_md5" ]; then
+        rm "$1/$f"
+    else
+        echo "De md5 vergelijking klopt niet"
+        exit 1
+    fi
+
+done
 
