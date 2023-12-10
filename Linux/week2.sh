@@ -37,37 +37,67 @@ elif [ "$2" != "maand" ] && [ "$2" != "week" ]; then
 fi
 
 
-# Stap 2: Krijg de tijden van de file
+# Dit maakt testen handiger
 BASE_DIR="c/Users/patrick/Downloads/Lecture 1 Demo code(2)/Lecture 1/Linux/random"
-echo $BASE_DIR
 cd "/mnt/c/Users/patrick/Downloads/Lecture 1 Demo code(2)/Lecture 1/Linux/random"
 
+# Wat is d ehuidige datum?
+current_date=$(date +%s)
 
-
-for f in *.png; do
-    ## Krijg de jaar tijden van de file
+for f in *.png *.jpg; do
+    # Stap 2: Krijg de tijden van de file
+    # Krijg de jaar tijden van de file
     year="$(date -d "$(stat -c %y "$f")" +%Y)"
-    ## Krijg de maand tijden van de file
+    # Krijg de maand tijden van de file
     month="$(date -d "$(stat -c %y "$f")" +%B)"
-    ## Krijg de week tijden van de file
+    # Krijg de week tijden van de file
     week="$(date -d "$(stat -c %y "$f")" +%U)"
+    # Datum sinds 1 jan 1970 voor het checken van het verschil
+    oudheid="$(date -d "$(stat -c %y "$f")" +%s)"
 
-    if [ $2 == "maand" ]; then
+    # Verschil in dagen, zit 86400 sec in een dag
+    verschil=$(( (current_date - oudheid) / 86400 ))
+    # Echo voor testen
+    echo "Deze foto is $verschil dagen oud"
 
-        # Stap 3: Check of de folder bestaat, zo niet --> aanmaken
-        if [ ! -d "$year/$month" ]; then
-            mkdir -p "$year/$month"
-        fi
+    # Echo's voor testen
+    # Eerst testen voor een maand en daarna voor een week, want als die voor een maand triggert
+    # dan triggert die natuurlijk ook voor een week....
+    if [ $verschil -ge 30 ]; then
+        echo "$f is langer dan een maand oud"
+    elif [ $verschil -ge 3 ]; then
+        echo "$f is langer dan een week oud"
+    fi
 
-        # Stap 4: Kopieer het bestand
-        cp "$f" "$year/$month"
-        new_file="$year/$month/$f"
+    # Logica van de if en elif is hetzelfde, waarschijnlijk als ik een OR achter de if plaats met de 
+    # Conditie van de elif dan werkt het ook, maar effeciente code staat niet in de opdracht :) Dus 
+    # Voor nu laat ik het gewoon zo want het duurde al even voordat het werkte... Beter inefficient en
+    # Werkend dan niet werkend
 
-    elif [ $2 == "week" ]; then
+
+
+    
+    if [ $2 == "maand" ] && [ $verschil -gt 30 ]; then
 
         # Stap 3: Check of de folder bestaat, zo niet --> aanmaken
         if [ ! -d "$year/$month/$week" ]; then
             mkdir -p "$year/$month/$week"
+            echo "Folder $year/$month/$week aangemaakt"
+        else
+            echo "Folder $year/$month/$week bestaat al"
+        fi
+
+        # Stap 4: Kopieer het bestand
+        cp "$f" "$year/$month/$week"
+        new_file="$year/$month/$week/$f"
+    elif [ $2 == "week" ] && [ $verschil -gt 3 ]; then
+
+        # Stap 3: Check of de folder bestaat, zo niet --> aanmaken
+        if [ ! -d "$year/$month/$week" ]; then
+            mkdir -p "$year/$month/$week"
+            echo "Folder $year/$month/$week aangemaakt"
+        else
+            echo "Folder $year/$month/$week bestaat al"
         fi
 
         # Stap 4: Kopieer het bestand
@@ -83,9 +113,11 @@ for f in *.png; do
 
     # Stap 6: delete het origineel als de hash overeenkomt
     if [ "$old_file_md5" = "$new_file_md5" ]; then
-        rm "$1/$f"
+        echo "De md5 vergelijking van $f klopt, de oude foto wordt verwijderd en als het er is wordt er overgegeaan op de volgende file"
+        #rm "$1/$f"
+        exit 1
     else
-        echo "De md5 vergelijking klopt niet"
+        echo "De md5 vergelijking van $f klopt niet, daarom wordt het programma geeindigd zonder een delete te doen"
         exit 1
     fi
 
