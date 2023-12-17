@@ -1,0 +1,18 @@
+1. How do you obtain the currently executing task handle?
+    1.1 xTaskGetCurrentTaskHandle()
+2. How do you give up the CPU to another task?
+    2.1 taskYIELD()
+3. Which CPU core do application programs execute on for the ESP32?
+    3.1 Core1
+4. What is the name of the default task provided by the Arduino environment?
+    4.1 Setup en Loop
+5. What FreeRTOS function is used to suspend one task?
+    5.1 vTaskSuspend(), om hem dan weer te starten moet je vTaskResume() gebruiken
+6. Can a task delete itself and if so how?
+    6.1 Ja, door vTaskDelete(NULL) te gebruiken.
+7. When is the task’s stack released when a task deletes itself? Immediately or later during the IDLE task?
+    7.1 Later, het gebeurt pas als IDLE task CPU time krijgt om 'schoon te maken'.
+8. What causes the preemption in FreeRTOS for ESP32?
+    8.1 Als een hogere prioriteit task klaar is met wachten en kan runnen of door bijvoorbeeld time-slice round-robin
+9. How often do the ESP32 tick interrupts occur?
+    9.1 Elke 1ms
