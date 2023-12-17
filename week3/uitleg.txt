@@ -1,9 +1,0 @@
-Week 3 opgave 1: files
-     week3-1.c: implementatie volgens beschrijving. Aparte functies voor openen van input en output file
-     week3-2-alt1.c: 1 functie voor openen en input van output file.
-
-Week 3 opgave 2: memory allocation
-     week3-2.c: implementatie volgens beschrijving. Structuren in sequentieel geheugen.
-     week3-2-alt1.c: met rij van pointers naar alle structuren in sequentieel geheugen. Structuren niet in sequentieel geheugen.
-     week3-2-alt2a.c: implementatie obv linked list. Structuren niet in sequentieel geheugen.
-     week3-2-alt2b.c: implementatie obv linked list met geneste structuren Persoon en Opleiding (net als in weektaak 2)
