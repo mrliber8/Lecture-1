@@ -67,5 +67,18 @@ void setup() {
 }
 
 void loop() {
-  delay(1000);
+  //delay(1000);
+  delay(10000); // Wacht 10 seconden
+  
+  for (int i = 0; i < 3; i++) {
+    vTaskSuspend(leds[i].taskh); // Suspend de task
+    printf("Suspended \n"); // printf voor test
+    delay(3000);  // Wacht 3 seconden
+  }
+
+  for (int i = 0; i<3; i++){
+    vTaskResume(leds[i].taskh); // Hervat de tasks weer
+    printf("Hervat \n"); // printf voor test
+  }
+
 }
