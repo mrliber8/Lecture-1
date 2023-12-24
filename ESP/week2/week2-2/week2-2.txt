@@ -1,0 +1,10 @@
+c.	Leg uit hoe men de schakelaars ontdendert (debounce):
+
+Wanneer je een knop indrukt kan de schakelaar heel snel reageren, waardoor die
+meerdere malen open en sluit. Hierdoor kan je een 01010101 als signaal bijvoorbeeld
+terugkrijgen. 
+
+level = !!digitalRead(GPIO_BUTTON); zit in een infinite loop en leest de staat uit (0 of 1).
+Dan worden alle bits één positie naar links verschoven en wordt de nieuwe status toegevoegt.
+De if-conditie contorleert dan of ze allemaal dezelfde waarde hebben (0 of 1) en stuurt het 
+naar de queue.

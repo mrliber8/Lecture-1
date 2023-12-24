@@ -1,0 +1,10 @@
+a.	Maak de opdrachten 5, 6 en 7 op bladzijde 115 van het lesboek ”freertos for esp32”.
+
+5. What is the initial state of a binary semaphore? Empty or given?
+5.1 beiden, maar het hangt ervan af hoe het is geinitialiseerd
+6. What is the initial state of a counting semaphore?
+6.1 Wordt ook bepaald bij de initialisatie, maar het mag niet negatief zijn.
+7. How does the counting semaphore prevent a deadlock in the dining philosophers problem?
+7.1 Met N philosophers mogen er 0 tot N-1 philosophers eten, maar nooit allemaal tegelijk.
+    Zo is er altijd minimaal 1 philosopher die kan eten.
+
