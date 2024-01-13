@@ -1,5 +1,5 @@
 1. What is the most urgent and least urgent priority for the ESP32 Arduino?
-    0 heeft de laagste prioriteit en de meest urgent prio is de hoogste, maar de prio van een task moet je zelf instellen
+    0 heeft de laagste prioriteit en de meest urgent prio is de hoogste (24), maar de prio van een task moet je zelf instellen
 2. Do you need to call vTaskStartScheduler() for Arduino?
     Nee, deze word, in de ESP32 Arduino omgeving, over het algemeen automatishc gestart voordat setup() wordt aangeroepen
 3. When does the FreeRTOS scheduler get invoked in the course of a program’s execution?
