@@ -136,7 +136,7 @@ void IRAM_ATTR HWCheckButton(void)
         alreadyTriggered_button1 = true;
     else if (buttonPressed_button2)
         alreadyTriggered_button2 = true;
-   Buttoncheck();
+   ButtonCheck();
   }
   else if (!buttonPressed_button1 || !buttonPressed_button2)
   {
@@ -145,7 +145,7 @@ void IRAM_ATTR HWCheckButton(void)
         alreadyTriggered_button1 = false;
     else
         alreadyTriggered_button2 = false;
-    Buttoncheck();
+    ButtonCheck();
   }
 }
 
