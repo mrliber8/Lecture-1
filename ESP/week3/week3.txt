@@ -1,0 +1,4 @@
+Het week3.txt met jullie antwoorden voor opdrachten 1, 2, 3, 4 en 5.
+Het week3-2.ino bestand met de aangepaste code voor opdracht 2.
+Het week3-5.ino bestand met de aangepaste code voor opdracht 5.
+Het week3-6.ino bestand met de code voor opdracht 6.
