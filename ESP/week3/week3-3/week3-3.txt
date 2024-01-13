@@ -1,0 +1,4 @@
+Lees hoofdstuk 9 tot het onderdeel ”Running the demo” op pagina 177 van het lesboek ”freertos for esp32”. 
+a.	Maak de opdrachten 2, 3, 4, 5, 8 en 15 op bladzijde 190 van het lesboek ”freertos for esp32”.
+Lever de gemaakte opdrachten in: “week3.txt”.
+
