@@ -1,6 +1,7 @@
-//ch9-hwtimer 
-//Modified - removed Blinky code
-//To demonstrate hardware timer - switch both interrupt driven 
+/************************************************************
+
+ ************************************************************/
+
 /****************************************************************************************************************************
   ISR_Timer_Switch.ino
   For ESP32 boards
@@ -59,118 +60,70 @@ ESP32Timer ITimer1(1);
 #define TIMER_INTERVAL_MS             15
 #define DEBOUNCE_TIME                 30
 #define LED_PIN                       22 //14
-#define BUTTON1_PIN                   18 //26
-#define BUTTON2_PIN                   19 //27
+#define BUTTON_PIN                    18 //26
 
-volatile unsigned long  lastDebounceTime_button1  = 0;
-volatile unsigned long  lastDebounceTime_button2  = 0;
-volatile bool           SwitchReset_button1  = true;
-volatile bool           SwitchReset_button2  = true;
-
-volatile bool           buttonPressed_button1     = false;
-volatile bool           alreadyTriggered_button1  = false;
-volatile bool           buttonPressed_button2     = false;
-volatile bool           alreadyTriggered_button2  = false;
-
+volatile unsigned long  lastDebounceTime  = 0;
+volatile bool           buttonPressed     = false;
+volatile bool           alreadyTriggered  = false;
 volatile bool           LampState    = false;
+volatile bool           SwitchReset  = true;
 
-void IRAM_ATTR Falling_button1_or_2();
-void IRAM_ATTR Rising_button1_or_2();
+
+void IRAM_ATTR Falling();
+void IRAM_ATTR Rising();
 void IRAM_ATTR ButtonCheck();
 void IRAM_ATTR ToggleLED();
 
 
-void IRAM_ATTR Rising_button1_or_2() {
+void IRAM_ATTR Rising() {
   unsigned long currentTime  = millis();
   unsigned long TimeDiff;
 
-  TimeDiff = currentTime - lastDebounceTime_button1;
+  TimeDiff = currentTime - lastDebounceTime;
 
-  if (digitalRead(BUTTON1_PIN) && (TimeDiff > DEBOUNCE_TIME) ) {
-    buttonPressed_button1 = false;
-    lastDebounceTime_button1 = currentTime;
+  if (digitalRead(BUTTON_PIN) && (TimeDiff > DEBOUNCE_TIME) ) {
+    buttonPressed = false;
+    lastDebounceTime = currentTime;
   }
 }
 
-void IRAM_ATTR Falling_button1_or_2() {
+void IRAM_ATTR Falling() {
   unsigned long currentTime  = millis();
 
-  if ( !digitalRead(BUTTON1_PIN) && (currentTime > lastDebounceTime_button1 + DEBOUNCE_TIME)) {
-    lastDebounceTime_button1 = currentTime;
-    buttonPressed_button1 = true;
+  if ( !digitalRead(BUTTON_PIN) && (currentTime > lastDebounceTime + DEBOUNCE_TIME)) {
+    lastDebounceTime = currentTime;
+    buttonPressed = true;
   }
 }
-
-//create here Rising and Falling ISR for button2
-
-void IRAM_ATTR Rising_button2() {
-  unsigned long currentTime  = millis();
-  unsigned long TimeDiff;
-
-  TimeDiff = currentTime - lastDebounceTime_button2;
-
-  if (digitalRead(BUTTON2_PIN) && (TimeDiff > DEBOUNCE_TIME) ) {
-    buttonPressed_button2 = false;
-    lastDebounceTime_button2 = currentTime;
-  }
-}
-
-
-void IRAM_ATTR Falling_button2() {
-  unsigned long currentTime  = millis();
-
-  if ( !digitalRead(BUTTON2_PIN) && (currentTime > lastDebounceTime_button2 + DEBOUNCE_TIME)) {
-    lastDebounceTime_button2 = currentTime;
-    buttonPressed_button2 = true;
-  }
-}
-
 
 
 void IRAM_ATTR HWCheckButton(void)
 {
-  if ((!alreadyTriggered_button1 && buttonPressed_button1) || (!alreadyTriggered_button2 && buttonPressed_button2))
-
+  if (!alreadyTriggered && buttonPressed)
   {
-    if(buttonPressed_button1)
-        alreadyTriggered_button1 = true;
-    else if (buttonPressed_button2)
-        alreadyTriggered_button2 = true;
-   Buttoncheck();
+    alreadyTriggered = true;
+    ButtonCheck();
   }
-  else if (!buttonPressed_button1 || !buttonPressed_button2)
+  else if (!buttonPressed)
   {
     // Reset flag when button released to avoid triggered repeatedly
-    if(buttonPressed_button1)
-        alreadyTriggered_button1 = false;
-    else
-        alreadyTriggered_button2 = false;
-    Buttoncheck();
+    alreadyTriggered = false;
+    ButtonCheck();
   }
 }
 
 
 void IRAM_ATTR ButtonCheck()
 {
-  boolean SwitchState_button1 = (digitalRead(BUTTON1_PIN));
-  boolean SwitchState_button2 = (digitalRead(BUTTON2_PIN));
+  boolean SwitchState = (digitalRead(BUTTON_PIN));
 
-  if (!SwitchState_button1 && SwitchReset_button1)
+  if (!SwitchState && SwitchReset)
   {
     ToggleLED();
-    SwitchReset_button1 = false;
+    SwitchReset = false;
   }
-  else if (SwitchState_button1)
-    SwitchReset_button1 = true;
-
-  if (!SwitchState_button2 && SwitchReset_button2) {
-    ToggleLED();
-    SwitchReset_button2 = false;
-  } 
-  else if (SwitchState_button2)
-    SwitchReset_button2 = true;
-
-  // add code here to check button 2
+  else if (SwitchState)
+    SwitchReset = true;
 }
 
 
@@ -183,22 +136,17 @@ void IRAM_ATTR ToggleLED()
 
 void setup()
 {
-
+  delay(2000); // wait for usb
   pinMode(LED_PIN, OUTPUT);
-  pinMode(BUTTON1_PIN, INPUT_PULLUP);
-  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
 
-  attachInterrupt(digitalPinToInterrupt(BUTTON1_PIN), Falling_button1_or_2, FALLING);
-  attachInterrupt(digitalPinToInterrupt(BUTTON1_PIN), Rising_button1_or_2, RISING);
-  // copy and change lens above to attach interrupt to button2
+  
+  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), Falling, FALLING);
+  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), Rising, RISING);
 
-  attachInterrupt(digitalPinToInterrupt(BUTTON2_PIN), Falling_button2, FALLING);
-  attachInterrupt(digitalPinToInterrupt(BUTTON2_PIN), Rising_button2, RISING);
-
-  delay(1000); // wait for usb  
   Serial.begin(115200);
   while (!Serial);
-
+  
   Serial.print(F("\nStarting ISR_Timer_Switch on ")); Serial.println(ARDUINO_BOARD);
   Serial.println(ESP32_TIMER_INTERRUPT_VERSION);
   Serial.print(F("CPU Frequency = ")); Serial.print(F_CPU / 1000000); Serial.println(F(" MHz"));

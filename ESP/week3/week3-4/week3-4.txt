@@ -3,5 +3,8 @@ We willen dat door het indrukken van een knop (of het omzetten van een schakelaa
 a. Importeer de library ”ESP32TimerInterrupt.h” in de Arduino IDE om de HW timer van de ESP32 te gebruiken: ”Tools” −→ ”Manage Libraries” −→ zoek ”ESP32TimerInterrupt” en installeer versie 1.5.0). 
 b. Download “ch9-int_hwtimer_std.ino” van blackboard, run de code en bestudeer de werking.  
 c. Leg uit hoe men de schakelaars ontdendert (debounce).
+    Er is een variabele genaamd 'DEBOUNCE_TIME' die op 30ms is gezet, dus pas na 30ms wordt het als geldig beschouwt. Ook wordt zo te zien in Falling() en Rising() gecontroleerd 
+    als de huidige tijd - lastDebounceTime groter is dan DEBOUNCE_TIME, pas als dit zo is wordt het als geldig beschouwd.
 d. Leg uit wat de taak van de timer interrupt is
-Lever de antwoorden op vragen c. en d. in: “week3.txt”.
+    Dit zorgt ervoor dat de code periodiek wordt gerund. TIMER_INTERVAL_MS staat op 15, dus elke 15ms wordt HWCheckButton() aangeroepen. 
+
