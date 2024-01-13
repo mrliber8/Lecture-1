@@ -1,0 +1,86 @@
+j.	Voer het programma uit en leg aan de hand van de output van het programma uit waarom de pers, ondanks de aangegeven prioritering van de taken, 
+al geactiveerd kan worden voordat de juiste tijd van de NTP-server is ontvangen.
+
+De 'delay(500)' is denk ik een blocking call, want het lijkt alsof de CPU hierdoor wordt rvijgegeven waardoor de andere taken gestart worden.
+
+Relevante output:
+void setup(): Begin met het maken van WiFi_connect_task...
+WiFi_connect(): Wifi begin wordt nu uitgevoerd
+ void setup(): WiFi_connect_task gemaakt.
+ void setup(): Begin met het maken van sntp_connect_task...
+Connect to SNTP server
+SNTP_connect(): sntp delay begint nu
+ void setup(): sntp_connect_task gemaakt.
+ void setup(): Begin met het maken van debounceR_task...
+ void setup(): debounceR_task gemaakt.
+ void setup(): Begin met het maken van debounceL_task...
+ void setup(): debounceL_task gemaakt.
+		in debounce_task(): LEFT start 1
+		in debounce_task(): RIGHT start 1
+ void setup(): Begin met het maken van press_task...
+ void setup(): press_task gemaakt.
+Current time: Thu Jan  1 01:00:02 1970
+		in press_task(): end 0
+WiFi_connect(): Wifi begin is nu klaar
+WiFi_connect(): wifi delay begint nu
+Current time: Thu Jan  1 01:00:02 1970
+Current time: Thu Jan  1 01:00:02 1970
+Current time: Thu Jan  1 01:00:02 1970
+Current time: Thu Jan  1 01:00:02 1970
+SNTP_connect(): sntp delay eindigt nu
+.SNTP_connect(): sntp delay begint nu
+Current time: Thu Jan  1 01:00:02 1970
+WiFi_connect(): wifi delay eindigt nu
+.Current time: Thu Jan  1 01:00:02 1970
+Current time: Thu Jan  1 01:00:02 1970
+Current time: Thu Jan  1 01:00:02 1970
+
+Current time: Thu Jan  1 01:00:02 1970
+SNTP_connect(): sntp delay eindigt nu
+.SNTP_connect(): sntp delay begint nu
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+SNTP_connect(): sntp delay eindigt nu
+.SNTP_connect(): sntp delay begint nu
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+Current time: Thu Jan  1 01:00:03 1970
+SNTP_connect(): sntp delay eindigt nu
+.SNTP_connect(): sntp delay begint nu
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+SNTP_connect(): sntp delay eindigt nu
+.SNTP_connect(): sntp delay begint nu
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+Current time: Thu Jan  1 01:00:04 1970
+
+SNTP_connect(): sntp delay eindigt nu
+.SNTP_connect(): sntp delay begint nu
+Current time: Thu Jan  1 01:00:05 1970
+Current time: Thu Jan  1 01:00:05 1970
+Current time: Thu Jan  1 01:00:05 1970
+Current time: Thu Jan  1 01:00:05 1970
+Current time: Thu Jan  1 01:00:05 1970
+SNTP_connect(): sntp delay eindigt nu
+.SNTP_connect(): sntp delay begint nu
+Current time: Thu Jan  1 01:00:05 1970
+Current time: Sat Jan 13 12:57:19 2024
+Current time: Sat Jan 13 12:57:19 2024
+Current time: Sat Jan 13 12:57:19 2024
+Current time: Sat Jan 13 12:57:19 2024
+SNTP_connect(): sntp delay eindigt nu
+ CONNECTED
+Current time: Sat Jan 13 12:57:19 2024
+Current time: Sat Jan 13 12:57:19 2024 
+

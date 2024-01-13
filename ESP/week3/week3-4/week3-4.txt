@@ -1,0 +1,7 @@
+4.	Interrupts: timer met 1 drukknop en 1 LED
+We willen dat door het indrukken van een knop (of het omzetten van een schakelaar) een interrupt wordt gegenereerd, dat een lampje afwisselend aan of uit zet. De status van de drukknop (of schakelaar) moet periodiek worden gecontroleerd door middel van een hardware timer. Hierbij moet uiteraard ook rekening worden gehouden met het “debounce” effect.   
+a. Importeer de library ”ESP32TimerInterrupt.h” in de Arduino IDE om de HW timer van de ESP32 te gebruiken: ”Tools” −→ ”Manage Libraries” −→ zoek ”ESP32TimerInterrupt” en installeer versie 1.5.0). 
+b. Download “ch9-int_hwtimer_std.ino” van blackboard, run de code en bestudeer de werking.  
+c. Leg uit hoe men de schakelaars ontdendert (debounce).
+d. Leg uit wat de taak van de timer interrupt is
+Lever de antwoorden op vragen c. en d. in: “week3.txt”.

@@ -1,0 +1,5 @@
+We willen de code uit opgave 4 zo aanpassen dat het lampje ook met een 2e drukknop aan of uit gezet kan worden (net zoals we dat in week 2 zonder interrupts hebben gedaan). De twee knoppen hebben dus precies hetzelfde effect: het lampje wordt aan- of uitgezet. 
+a. Download “ch9-int_hwtimer_2buttons_std.ino” van blackboard. 
+b. Breid de code uit zodat ook het indrukken van de 2e knop ervoor zorgt dat er een interrupt wordt gegenereerd, dat een lampje afwisselend aan of uit zet. 
+c. Leg uit wat de taak van de timer interrupt is in week3.txt
+Lever het bestand met de code in als “week3-5.ino”. 
