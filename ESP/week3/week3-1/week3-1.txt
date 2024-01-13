@@ -1,0 +1,26 @@
+1. What is the most urgent and least urgent priority for the ESP32 Arduino?
+    0 heeft de laagste prioriteit en de meest urgent prio is de hoogste, maar de prio van een task moet je zelf instellen
+2. Do you need to call vTaskStartScheduler() for Arduino?
+    Nee, deze word, in de ESP32 Arduino omgeving, over het algemeen automatishc gestart voordat setup() wordt aangeroepen
+3. When does the FreeRTOS scheduler get invoked in the course of a program’s execution?
+    Na de initializatie van het systeem en nadat tenminste 1 task is gecreerd. 
+4. What kind of scheduling occurs among tasks of equal priority?
+    Round Robin, elke task van dezelfde priority krijgt een time-slice waarin die mag runnen.
+5. How do you create a ready-to-go task and unleash it only when it is time for it to start?
+    Maak een task: xTaskCreate(), Pauzeer hem gelijk: vTaskSuspend(), Start hem later weer: vTaskResume()
+6. What causes the execution of a task to be pre-empted?
+    Als een hogere prioriteit task opeens beschikbaar komt
+7. On the ESP32, what is the maximum time slice in ms?
+    -
+8. When does less than a full-time slice occur?
+    pre-empted door een hogere prio task of als er een interrupt plaats vind
+9. Is the call to taskYIELD() a blocking call? Why or why not?
+    Nee, taskYield() geeft de controle terug aan de scheduler zodat die opnieuw een beslissing kan maken over welke task moet runnen
+10. Is the call to the Arduino delay() (or FreeRTOS vTaskDelay()) a blocking call? Why or why not?
+    Ja, het blokkert de huidige taak voor een bepaalde tijd zodat een andere task kan runnen 
+11. How do you invoke the FreeRTOS scheduler directly?
+    vTaskStartScheduler(), maar zie de tweede vraag, over het algemeen gebeurd dit voordat setup() wordt aangeroepen in de arduino ESP32 omgeving
+12. How does a task become CPU starved?
+    Als het te weinig processortijd krijgt, dit kan zijn doordat er te veel taken met een hogere prio zijn of als die taken te veel tijd in beslag nemen zonder onderbeking
+13. Does a call to taskYIELD() ever result in a higher priority task running? Why or why not?
+    Kan, taskYIELD() geeft volgensmij de controle gewoon terug aan de scheduler. Als er dan een hogere prio taak beshcikbaar is dan wordt die natuurlijk als eerste uitgevoerd.
