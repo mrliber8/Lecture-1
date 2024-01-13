@@ -2,3 +2,16 @@ Lees hoofdstuk 9 tot het onderdeel ”Running the demo” op pagina 177 van het 
 a.	Maak de opdrachten 2, 3, 4, 5, 8 en 15 op bladzijde 190 van het lesboek ”freertos for esp32”.
 Lever de gemaakte opdrachten in: “week3.txt”.
 
+Exercises
+2. Why is it a bad idea to call routines like printf, snprintf() etc.?
+    Het zijn relatief langzame functies die veel systeembronnen gebruiken, terwijl je juist wilt dat interrupts heel snel zijn om te voorkomen dat andere interrupts te lang wachten
+3. Name the reason why malloc() or free() should never be called from an ISR.
+    Deze functies zijn niet 'reentrant'. Ze zijn niet ontworpen om te worden onderbroken en opnieuw aangeroepen te worden voordat de eerste oproep voltooid is. Dit kan leiden tot corruptie, bij malloc() kan bijv de gelinkte lijst van geheugenblokken gecorrupt worden
+4. What stack does the ISR stack frame get allocated from?
+    Van een vooraf gedifineerde stack, dus niet van de stack van de huidige taak. Deze is gelimiteerd tot 1536 Bytes
+5. What factors reduce the maximum stack space available for an ISR?
+    Bijvoorbeeld door geneste interrupts.
+8. How is the task scheduler invoked from within an ISR?
+    Vaak indirect doordat functies als portYIELD_FROM_ISR() of taskYIELD() gebruikt worden
+15. Is it permissible to call delay() from within an ISR?
+    Nee, delay() vertraagt de interrupt, waardoor andere interrupts mogelijk lnager moeten wachten
