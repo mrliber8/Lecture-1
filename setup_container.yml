@@ -1,0 +1,19 @@
+---
+- name: Install and configure Ubuntu Docker Container
+  hosts: mytest
+  become: yes
+  vars_files:
+    - secret.yml
+
+  tasks:
+    - name: Pull Ubuntu image for docker
+      community.docker.docker_image:
+        name: ubuntu
+        source: pull
+
+    - name: Create and start container
+      community.docker.docker_container:
+        name: ubuntu_container
+        image: ubuntu
+        command: sleep 7d
+        state: started
