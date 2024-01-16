@@ -1,0 +1,42 @@
+---
+- name: Install and configure syslog-ng
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars_files: 
+    - secret.yml
+
+  tasks:
+    - name: Ensure syslog-ng is installed
+      ansible.builtin.package:
+        name: syslog-ng
+        state: present
+
+    - name: Add network source definition to syslog-ng config
+      lineinfile:
+        path: /etc/syslog-ng/syslog-ng.conf
+        insertafter: 'source s_.*{'
+        line: 'source s_network { network(ip(192.168.232.129) port(514) transport(tcp)); };'
+        create: no
+
+    - name: Add network destination definition to syslog-ng config
+      lineinfile:
+        path: /etc/syslog-ng/syslog-ng.conf
+        insertafter: 'destination d_.*{'
+        line: 'destination d_network { file("/var/log/remote/${HOST}.log"); };'
+        create: no
+
+    - name: Add network log path to syslog-ng config
+      lineinfile:
+        path: /etc/syslog-ng/syslog-ng.conf
+        insertafter: 'log {'
+        line: 'log { source(s_network); destination(d_network); };'
+        create: no
+      notify: Restart syslog-ng
+
+  handlers:
+    - name: Restart the syslog-ng server
+      service:
+        name: syslog-ng
+        state: restarted
+

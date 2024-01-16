@@ -1,0 +1,64 @@
+---
+- name: Install and Configure Apache2 HTTP server
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  vars_files:
+    - secret.yml
+
+  tasks:
+    - name: Install Apache2
+      apt:
+        name: apache2
+        state: present
+
+    - name: Ensure Apache is running and enabled
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Configure Apache2
+      copy:
+        dest: /etc/apache2/sites-available/000-default.conf
+        content: |
+          <VirtualHost *:80>
+              ServerName vm1.ea.org
+              ServerAlias vm1
+
+              ServerAdmin  info@example.org
+
+              DocumentRoot /var/www
+
+              Alias /munin/static/ /etc/munin/static/
+              <Directory /etc/munin/static>
+                  Require all granted
+              </Directory>
+
+              Alias /munin /var/cache/munin/www
+              <Directory /var/cache/munin/www>
+                  Require all granted
+              </Directory>
+
+              CustomLog /var/log/apache2/munin.example.org-access.log combined
+              ErrorLog  /var/log/apache2/munin.example.org-error.log
+          </VirtualHost>
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart apache2 server
+    
+    - name: Munin permissions
+      file:
+        path: /var/cache/munin/www
+        owner: munin
+        group: www-data
+        mode: '0775'
+        recurse: yes
+
+  handlers:
+    - name: Restart apache2 server
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
+
