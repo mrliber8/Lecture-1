@@ -1,0 +1,58 @@
+#---
+#- name: Install and Configure Munin Node
+#  hosts: mytest
+#  become: yes
+#  vars_files:
+#    - secret.yml
+#
+#  tasks:
+#    - name: Ensure munin-node is installed
+#      ansible.builtin.package:
+#        name: munin-node
+#        state: present
+#
+#    - name: Configure munin-node
+#      ansible.builtin.lineinfile:
+#        path: /etc/munin/munin-node.conf
+#        regexp: "{{ item.regexp }}"
+#        line: "{{ item.line }}"
+#        state: present
+#      loop:
+#        - { regexp: '^#?allow .*', line: 'allow ^192\.168\.232\.129$' }
+#        - { regexp: '^#?host_name .*', line: 'host_name server3' }
+#        - { regexp: '^#?host .*', line: 'host 192.168.232.133' }
+#      notify: restart munin-node
+#
+#  handlers:
+#    - name: restart munin-node
+#      ansible.builtin.service:
+#        name: munin-node
+#        state: restarted
+#
+#
+---
+- name: Install and Configure Munin Node
+  hosts: 127.0.0.1
+  connection: local
+  become: yes
+  vars_files:
+    - secret.yml
+
+  tasks:
+    - name: Add server3 to munin host file on control node
+      ansible.builtin.lineinfile:
+        path: /etc/munin/munin.conf
+        line: |
+          [server3]
+              address 192.168.232.133
+        insertafter: EOF
+      notify: restart munin-server
+      run_once: true
+
+
+  handlers:
+    - name: restart munin-server
+      ansible.builtin.service:
+        name: munin
+        state: restarted
+
