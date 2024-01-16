@@ -1,5 +1,5 @@
 ---
-- name: Update syslog-ng configuration
+- name: Install syslog-ng with proper configuration on client
   hosts: mytest
   become: yes
   vars_files:
