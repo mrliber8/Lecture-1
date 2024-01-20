@@ -12,7 +12,7 @@
         name:
           - munin-node
           - munin
-      state: present
+        state: present
 
     - name: Configure munin-node
       ansible.builtin.lineinfile:
