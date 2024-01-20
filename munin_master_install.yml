@@ -21,10 +21,20 @@
         line: "{{ item.line }}"
         state: present
       loop:
-        - { regexp: '^#?allow .*', line: 'allow ^192\.168\.232\.129$' }
-        - { regexp: '^#?host_name .*', line: 'host_name server3' }
-        - { regexp: '^#?host .*', line: 'host 192.168.232.133' }
+        - { regexp: '^#?allow .*', line: 'allow ^192\.168\.232\.134$' }
+        - { regexp: '^#?host_name .*', line: 'host_name server4' }
+        - { regexp: '^#?host .*', line: 'host 192.168.232.134' }
       notify: restart munin services
+
+    - name: Add local server to munin host file
+      ansible.builtin.lineinfile:
+        path: /etc/munin/munin.conf
+        line: |
+          [server4]
+              address 192.168.232.134
+        insertafter: EOF
+      notify: restart munin services
+      run_once: true
 
   handlers:
     - name: restart munin services

@@ -15,7 +15,7 @@
       lineinfile:
         path: /etc/syslog-ng/syslog-ng.conf
         insertafter: 'destination d_.*{'
-        line: 'destination d_net { tcp("192.168.232.129" port(514) log_fifo_size(1000)); };'
+        line: 'destination d_net { tcp("192.168.232.134" port(514) log_fifo_size(1000)); };'
         create: no #Makes it so that if the file does not exist, it does not create a new file
 
     - name: Add log path to syslog-ng config

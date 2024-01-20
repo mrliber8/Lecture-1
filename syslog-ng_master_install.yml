@@ -16,7 +16,7 @@
       lineinfile:
         path: /etc/syslog-ng/syslog-ng.conf
         insertafter: 'source s_.*{'
-        line: 'source s_network { network(ip(192.168.232.129) port(514) transport(tcp)); };'
+        line: 'source s_network { network(ip(192.168.232.134) port(514) transport(tcp)); };'
         create: no
 
     - name: Add network destination definition to syslog-ng config
