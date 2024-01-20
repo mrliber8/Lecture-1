@@ -1,6 +1,6 @@
 ---
 - name: Install and Set Up Docker
-  hosts: mytest
+  hosts: Client
   become: yes
   vars_files:
     - secret.yml
@@ -19,7 +19,7 @@
         state: latest
         update_cache: true
 
-    - name: Add Docker’s GPG key
+    - name: Add Dockers GPG key
       ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present

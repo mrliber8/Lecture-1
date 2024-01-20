@@ -1,6 +1,6 @@
 ---
 - name: Install and Configure Munin Node
-  hosts: mytest
+  hosts: Client
   become: yes
   vars_files:
     - secret.yml

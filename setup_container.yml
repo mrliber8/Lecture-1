@@ -1,6 +1,6 @@
 ---
 - name: Install and configure Ubuntu Docker Container
-  hosts: mytest
+  hosts: Client
   become: yes
   vars_files:
     - secret.yml

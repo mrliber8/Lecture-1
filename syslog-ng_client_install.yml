@@ -1,6 +1,6 @@
 ---
 - name: Install syslog-ng with proper configuration on client
-  hosts: mytest
+  hosts: Client
   become: yes
   vars_files:
     - secret.yml
