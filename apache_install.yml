@@ -47,14 +47,6 @@
         group: root
         mode: '0644'
       notify: Restart apache2 server
-    
-    - name: Munin permissions
-      file:
-        path: /var/cache/munin/www
-        owner: munin
-        group: www-data
-        mode: '0775'
-        recurse: yes
 
   handlers:
     - name: Restart apache2 server
