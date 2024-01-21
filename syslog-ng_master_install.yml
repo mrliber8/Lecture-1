@@ -12,6 +12,14 @@
         name: syslog-ng
         state: present
 
+    - name: Create /var/log/remote directory
+      ansible.builtin.file:
+        path: /var/log/remote
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
     - name: Add network source definition to syslog-ng config
       lineinfile:
         path: /etc/syslog-ng/syslog-ng.conf
@@ -26,17 +34,23 @@
         line: 'destination d_network { file("/var/log/remote/${HOST}.log"); };'
         create: no
 
-    - name: Add network log path to syslog-ng config
+    - name: Add network log path to syslog-ng config for remote logs
       lineinfile:
         path: /etc/syslog-ng/syslog-ng.conf
         insertafter: 'log {'
         line: 'log { source(s_network); destination(d_network); };'
         create: no
-      notify: Restart syslog-ng
+
+    - name: Add log path for local logs to syslog-ng config
+      lineinfile:
+        path: /etc/syslog-ng/syslog-ng.conf
+        insertafter: 'log {'
+        line: 'log { source(s_src); destination(d_network); };'
+        create: no
+      notify: restart syslog-ng
 
   handlers:
-    - name: Restart the syslog-ng server
+    - name: restart syslog-ng
       service:
         name: syslog-ng
         state: restarted
-
