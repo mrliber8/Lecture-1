@@ -20,7 +20,7 @@
       loop:
         - { regexp: '^#?allow .*', line: 'allow ^192\.168\.232\.134$' }
         - { regexp: '^#?host_name .*', line: 'host_name server5' }
-        - { regexp: '^#?host .*', line: 'host 192.168.232.135' }
+        - { regexp: '^#?host .*', line: 'host 192.168.232.136' }
       notify: restart munin-node
 
   handlers:
@@ -44,7 +44,7 @@
         path: /etc/munin/munin.conf
         line: |
           [server5]
-              address 192.168.232.135
+              address 192.168.232.136
         insertafter: EOF
       notify: restart munin-server
       run_once: true
