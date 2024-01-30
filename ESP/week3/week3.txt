@@ -2,3 +2,59 @@ Het week3.txt met jullie antwoorden voor opdrachten 1, 2, 3, 4 en 5.
 Het week3-2.ino bestand met de aangepaste code voor opdracht 2.
 Het week3-5.ino bestand met de aangepaste code voor opdracht 5.
 Het week3-6.ino bestand met de code voor opdracht 6.
+
+Opdracht 1:
+1. What is the most urgent and least urgent priority for the ESP32 Arduino?
+    0 heeft de laagste prioriteit en de meest urgent prio is de hoogste (24), maar de prio van een task moet je zelf instellen
+2. Do you need to call vTaskStartScheduler() for Arduino?
+    Nee, deze word, in de ESP32 Arduino omgeving, over het algemeen automatishc gestart voordat setup() wordt aangeroepen
+3. When does the FreeRTOS scheduler get invoked in the course of a program’s execution?
+    Na de initializatie van het systeem en nadat tenminste 1 task is gecreerd. 
+4. What kind of scheduling occurs among tasks of equal priority?
+    Round Robin, elke task van dezelfde priority krijgt een time-slice waarin die mag runnen.
+5. How do you create a ready-to-go task and unleash it only when it is time for it to start?
+    Maak een task: xTaskCreate(), Pauzeer hem gelijk: vTaskSuspend(), Start hem later weer: vTaskResume()
+6. What causes the execution of a task to be pre-empted?
+    Als een hogere prioriteit task opeens beschikbaar komt
+7. On the ESP32, what is the maximum time slice in ms?
+    -
+8. When does less than a full-time slice occur?
+    pre-empted door een hogere prio task of als er een interrupt plaats vind
+9. Is the call to taskYIELD() a blocking call? Why or why not?
+    Nee, taskYield() geeft de controle terug aan de scheduler zodat die opnieuw een beslissing kan maken over welke task moet runnen
+10. Is the call to the Arduino delay() (or FreeRTOS vTaskDelay()) a blocking call? Why or why not?
+    Ja, het blokkert de huidige taak voor een bepaalde tijd zodat een andere task kan runnen 
+11. How do you invoke the FreeRTOS scheduler directly?
+    vTaskStartScheduler(), maar zie de tweede vraag, over het algemeen gebeurd dit voordat setup() wordt aangeroepen in de arduino ESP32 omgeving
+12. How does a task become CPU starved?
+    Als het te weinig processortijd krijgt, dit kan zijn doordat er te veel taken met een hogere prio zijn of als die taken te veel tijd in beslag nemen zonder onderbeking
+13. Does a call to taskYIELD() ever result in a higher priority task running? Why or why not?
+    Kan, taskYIELD() geeft volgensmij de controle gewoon terug aan de scheduler. Als er dan een hogere prio taak beshcikbaar is dan wordt die natuurlijk als eerste uitgevoerd.
+
+Opdracht 2:
+De 'delay(500)' is denk ik een blocking call, want het lijkt alsof de CPU hierdoor wordt rvijgegeven waardoor de andere taken gestart worden.
+
+Opdracht 3:
+2. Why is it a bad idea to call routines like printf, snprintf() etc.?
+    Het zijn relatief langzame functies die veel systeembronnen gebruiken, terwijl je juist wilt dat interrupts heel snel zijn om te voorkomen dat andere interrupts te lang wachten
+3. Name the reason why malloc() or free() should never be called from an ISR.
+    Deze functies zijn niet 'reentrant'. Ze zijn niet ontworpen om te worden onderbroken en opnieuw aangeroepen te worden voordat de eerste oproep voltooid is. Dit kan leiden tot corruptie, bij malloc() kan bijv de gelinkte lijst van geheugenblokken gecorrupt worden
+4. What stack does the ISR stack frame get allocated from?
+    Van een vooraf gedifineerde stack, dus niet van de stack van de huidige taak. Deze is gelimiteerd tot 1536 Bytes
+5. What factors reduce the maximum stack space available for an ISR?
+    Bijvoorbeeld door geneste interrupts.
+8. How is the task scheduler invoked from within an ISR?
+    Vaak indirect doordat functies als portYIELD_FROM_ISR() of taskYIELD() gebruikt worden
+15. Is it permissible to call delay() from within an ISR?
+    Nee, delay() vertraagt de interrupt, waardoor andere interrupts mogelijk lnager moeten wachten
+
+Opdracht 4:
+c. Leg uit hoe men de schakelaars ontdendert (debounce).
+    Er is een variabele genaamd 'DEBOUNCE_TIME' die op 30ms is gezet, dus pas na 30ms wordt het als geldig beschouwt. Ook wordt zo te zien in Falling() en Rising() gecontroleerd 
+    als de huidige tijd - lastDebounceTime groter is dan DEBOUNCE_TIME, pas als dit zo is wordt het als geldig beschouwd.
+d. Leg uit wat de taak van de timer interrupt is
+    Dit zorgt ervoor dat de code periodiek wordt gerund. TIMER_INTERVAL_MS staat op 15, dus elke 15ms wordt HWCheckButton() aangeroepen. 
+
+Opdracht 5:
+c. Leg uit wat de taak van de timer interrupt is in week3.txt
+    HWCheckButton() wordt door de timer interrupt periodiek uitgevoerd, dit zorgt er dus voor dat regelmatig de knoppen worden gecontroleerd.
